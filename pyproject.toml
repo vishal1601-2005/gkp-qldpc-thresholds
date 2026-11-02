@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gkp-qldpc-thresholds"
+version = "0.1.0"
+description = "Verified tools for GKP-concatenated qLDPC thresholds in physical units (squeezing, photon loss)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Vishal Hiralal Thakur", email = "beingcosmic44@gmail.com" }]
+dependencies = ["numpy", "scipy", "ldpc>=2.3", "pymatching>=2.2"]
+
+[project.optional-dependencies]
+dev = ["pytest", "matplotlib"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+markers = ["slow: statistically heavier checks (deselect with -m 'not slow')"]
+testpaths = ["tests"]

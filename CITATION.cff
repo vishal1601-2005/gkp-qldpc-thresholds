@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "gkp-qldpc-thresholds"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Thakur
+    given-names: Vishal Hiralal
+    orcid: "https://orcid.org/0009-0008-8406-0508"
+version: 0.1.0
+date-released: "2026-10-25"
+repository-code: "https://github.com/vishal1601-2005/gkp-qldpc-thresholds"
+license: MIT

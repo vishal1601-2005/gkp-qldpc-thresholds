@@ -1,0 +1,7 @@
+model,decoder,sigma_low,sigma_high,status
+code capacity,hard,0.49,0.51,"3 clean pairs: 0.504,0.506,0.479 (see README)"
+code capacity,soft,0.545,0.565,"3 clean pairs: 0.555,0.558,0.540"
+phenomenological ratio 1,hard,0.4,0.434,mixed-distance pairs: bracket only
+phenomenological ratio 1,soft,0.462,0.492,mixed-distance pairs: bracket only
+phenomenological ratio 2,hard,0.327,0.365,mixed-distance pairs: bracket only
+phenomenological ratio 2,soft,0.403,0.403,single pair; 16v20 crossing below scanned window
