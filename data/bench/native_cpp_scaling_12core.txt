@@ -1,0 +1,6 @@
+# bench_native on N=1600 (m=768), hard priors sigma=0.50, OSD-CS(7), 2000 shots; Ubuntu 24.04 under WSL, 12 logical cores (author's run)
+m=768 n=1600 E=5376 B=2000 osd_order=7 threads=1 | best of 2: 6.5003 s  3250.2 us/shot  308 shots/s | BP converged 0.026  syndrome ok 1.000  mean iters 98.4
+m=768 n=1600 E=5376 B=2000 osd_order=7 threads=2 | best of 2: 3.6359 s  1817.9 us/shot  550 shots/s | BP converged 0.026  syndrome ok 1.000  mean iters 98.4
+m=768 n=1600 E=5376 B=2000 osd_order=7 threads=4 | best of 2: 2.2470 s  1123.5 us/shot  890 shots/s | BP converged 0.026  syndrome ok 1.000  mean iters 98.4
+m=768 n=1600 E=5376 B=2000 osd_order=7 threads=8 | best of 2: 1.5451 s  772.5 us/shot  1294 shots/s | BP converged 0.026  syndrome ok 1.000  mean iters 98.4
+m=768 n=1600 E=5376 B=2000 osd_order=7 threads=12 | best of 2: 1.3829 s  691.5 us/shot  1446 shots/s | BP converged 0.026  syndrome ok 1.000  mean iters 98.4

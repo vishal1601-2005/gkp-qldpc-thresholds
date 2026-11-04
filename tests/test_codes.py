@@ -33,3 +33,13 @@ def test_logical_check_detects_stabilizer_vs_logical():
     # a non-contractible loop of X errors (one row of horizontal edges in the toric layout) is a logical operator
     L = 4; loop = np.zeros(HX.shape[1], dtype=np.uint8); loop[:L] = 1
     assert logical_fail_batch(loop[None, :], Kd)[0]
+
+
+def test_bivariate_bicycle_family_parameters():
+    from gkp_qldpc.codes import BB_CODES, bb_code
+    expected = {"72_12_6": (72, 12), "90_8_10": (90, 8), "108_8_10": (108, 8), "144_12_12": (144, 12), "288_12_18": (288, 12)}
+    for name, (N, k) in expected.items():
+        HX, HZ, d = bb_code(name)
+        assert code_params(HX, HZ) == (N, k)
+        assert not ((HX @ HZ.T).toarray() % 2).any()
+        assert set(np.asarray(HX.sum(1)).ravel()) == {6} and set(np.asarray(HX.sum(0)).ravel()) == {3}

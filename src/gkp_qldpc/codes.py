@@ -97,3 +97,41 @@ def make_good_code(n, seed, dv=3, dc=4):
         HX, HZ = hgp(H, H)
         return HX, HZ, (n // 4) ** 2, d1
     raise RuntimeError("no code found")
+
+
+# ---------------- bivariate-bicycle (BB) codes (Bravyi et al., Nature 627, 778 (2024)) ----------------
+def bivariate_bicycle(l, m, a_terms, b_terms):
+    """BB code on N = 2*l*m qubits. Polynomials A = sum x^i y^j, B = sum x^i y^j in the ring F2[x,y]/(x^l - 1, y^m - 1),
+    with x = S_l (x) I_m and y = I_l (x) S_m (cyclic shifts). H_X = [A | B], H_Z = [B^T | A^T].
+    a_terms / b_terms: lists of (i, j) exponents. Returns (HX, HZ) as CSR uint8."""
+    def shift(k):
+        return sp.csr_matrix(np.roll(np.eye(k, dtype=np.int64), 1, axis=1))
+    I = sp.identity(l * m, format="csr", dtype=np.int64)
+    x = sp.kron(shift(l), sp.identity(m, dtype=np.int64), format="csr")
+    y = sp.kron(sp.identity(l, dtype=np.int64), shift(m), format="csr")
+    def power(M, k):
+        out = I
+        for _ in range(k): out = out @ M
+        return out
+    def poly(terms):
+        out = sp.csr_matrix((l * m, l * m), dtype=np.int64)
+        for i, j in terms: out = out + power(x, i) @ power(y, j)
+        out.data %= 2; out.eliminate_zeros(); return out
+    A, B = poly(a_terms), poly(b_terms)
+    HX = sp.hstack([A, B]).tocsr(); HZ = sp.hstack([B.T, A.T]).tocsr()
+    assert not ((HX @ HZ.T).toarray() % 2).any(), "HX HZ^T != 0"
+    return HX.astype(np.uint8), HZ.astype(np.uint8)
+
+
+# [[N, k, d]] as published; N and k are verified in the tests, d is quoted from the literature (not recomputed here).
+BB_CODES = {
+    "72_12_6":    dict(l=6,  m=6,  a=[(3, 0), (0, 1), (0, 2)], b=[(0, 3), (1, 0), (2, 0)], d=6),
+    "90_8_10":    dict(l=15, m=3,  a=[(9, 0), (0, 1), (0, 2)], b=[(0, 0), (2, 0), (7, 0)], d=10),
+    "108_8_10":   dict(l=9,  m=6,  a=[(3, 0), (0, 1), (0, 2)], b=[(0, 3), (1, 0), (2, 0)], d=10),
+    "144_12_12":  dict(l=12, m=6,  a=[(3, 0), (0, 1), (0, 2)], b=[(0, 3), (1, 0), (2, 0)], d=12),
+    "288_12_18":  dict(l=12, m=12, a=[(3, 0), (0, 2), (0, 7)], b=[(0, 3), (1, 0), (2, 0)], d=18),
+}
+
+
+def bb_code(name):
+    c = BB_CODES[name]; HX, HZ = bivariate_bicycle(c["l"], c["m"], c["a"], c["b"]); return HX, HZ, c["d"]

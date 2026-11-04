@@ -1,0 +1,12 @@
+n=16 hard sigma=0.50 :: m=192 n=400 E=1344 B=300 osd_order=7 threads=1
+    best of 2: 0.1979 s  659.8 us/shot  1516 shots/s | BP converged 0.053  syndrome ok 1.000  mean iters 95.7
+n=16 soft sigma=0.54 :: m=192 n=400 E=1344 B=300 osd_order=7 threads=1
+    best of 2: 0.1555 s  518.3 us/shot  1929 shots/s | BP converged 0.100  syndrome ok 1.000  mean iters 91.6
+n=24 hard sigma=0.50 :: m=432 n=900 E=3024 B=300 osd_order=7 threads=1
+    best of 2: 0.5890 s  1963.2 us/shot  509 shots/s | BP converged 0.017  syndrome ok 1.000  mean iters 98.8
+n=24 soft sigma=0.54 :: m=432 n=900 E=3024 B=300 osd_order=7 threads=1
+    best of 2: 0.5476 s  1825.2 us/shot  548 shots/s | BP converged 0.093  syndrome ok 1.000  mean iters 93.2
+n=32 hard sigma=0.50 :: m=768 n=1600 E=5376 B=300 osd_order=7 threads=1
+    best of 2: 1.5082 s  5027.3 us/shot  199 shots/s | BP converged 0.023  syndrome ok 1.000  mean iters 98.7
+n=32 soft sigma=0.54 :: m=768 n=1600 E=5376 B=300 osd_order=7 threads=1
+    best of 2: 1.1679 s  3893.0 us/shot  257 shots/s | BP converged 0.137  syndrome ok 1.000  mean iters 90.8

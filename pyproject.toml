@@ -13,7 +13,7 @@ authors = [{ name = "Vishal Hiralal Thakur", email = "beingcosmic44@gmail.com" }
 dependencies = ["numpy", "scipy", "ldpc>=2.3", "pymatching>=2.2"]
 
 [project.optional-dependencies]
-dev = ["pytest", "matplotlib"]
+dev = ["pytest", "matplotlib", "pybind11"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
