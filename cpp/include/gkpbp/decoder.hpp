@@ -25,6 +25,18 @@ struct Result {
     int iterations = 0;
 };
 
+// In-place 64x64 bit-matrix transpose (Hacker's Delight 7-3). With rows fed in reversed order and columns read in reversed order
+// (see osd_cs) it maps LSB-first row words to LSB-first column words.
+static inline void transpose64(uint64_t a[64]) {
+    int j, k; uint64_t m, t;
+    for (j = 32, m = 0x00000000FFFFFFFFULL; j; j >>= 1, m ^= m << j) {
+        for (k = 0; k < 64; k = ((k | j) + 1) & ~j) {
+            t = (a[k] ^ (a[k | j] >> j)) & m;
+            a[k] ^= t; a[k | j] ^= (t << j);
+        }
+    }
+}
+
 class BpOsd {
 public:
     // indptr/indices: CSR of the check matrix H (m x n). osd_order: -1 = BP only, 0 = OSD-0, >0 = OSD-CS(order).
@@ -145,11 +157,18 @@ private:
         std::vector<double> pc(rank); std::vector<char> base(rank);
         for (int i = 0; i < rank; ++i) { const int v = order_[pivot_pos_[i]]; pc[i] = llr[v]; base[i] = out[v]; }
         const int CW = (rank + 63) / 64;
-        std::vector<uint64_t> col((size_t)NP * CW, 0ULL);
-        for (int t = 0; t < NP; ++t) {
-            const int w = np[t] >> 6; const uint64_t bit = 1ULL << (np[t] & 63);
-            for (int i = 0; i < rank; ++i) if (row(i)[w] & bit) col[(size_t)t * CW + (i >> 6)] |= 1ULL << (i & 63);
+        // Column bit-vectors of the reduced matrix (over the pivot rows) for EVERY column position, built with a blocked 64x64 bit
+        // transpose: sequential row reads and sequential writes, instead of one strided bit test per (row, column) pair.
+        colT_.resize((size_t)W_ * 64 * CW);
+        uint64_t blk[64];
+        for (int ib = 0; ib < CW; ++ib) {
+            for (int w = 0; w < W_; ++w) {
+                for (int r = 0; r < 64; ++r) { const int i = ib * 64 + r; blk[63 - r] = (i < rank) ? row(i)[w] : 0ULL; }
+                transpose64(blk);
+                for (int c = 0; c < 64; ++c) colT_[(size_t)(w * 64 + c) * CW + ib] = blk[63 - c];
+            }
         }
+        auto colp = [&](int t) { return &colT_[(size_t)np[t] * CW]; };
         auto delta = [&](const uint64_t* flip) {
             double d = 0;
             for (int k = 0; k < CW; ++k) { uint64_t x = flip[k]; while (x) { const int b = __builtin_ctzll(x); x &= x - 1; const int i = k * 64 + b; d += base[i] ? -pc[i] : pc[i]; } }
@@ -158,12 +177,12 @@ private:
         double best = 0.0; int b1 = -1, b2 = -1;
         std::vector<uint64_t> tmp(CW);
         for (int t1 = 0; t1 < NP; ++t1) {
-            const uint64_t* c1 = &col[(size_t)t1 * CW];
+            const uint64_t* c1 = colp(t1);
             const double own1 = llr[order_[np[t1]]];
             const double d = own1 + delta(c1);
             if (d < best - 1e-12) { best = d; b1 = t1; b2 = -1; }
             if (t1 < L) for (int t2 = t1 + 1; t2 < L; ++t2) {
-                const uint64_t* c2 = &col[(size_t)t2 * CW];
+                const uint64_t* c2 = colp(t2);
                 for (int k = 0; k < CW; ++k) tmp[k] = c1[k] ^ c2[k];
                 const double d2 = own1 + llr[order_[np[t2]]] + delta(tmp.data());
                 if (d2 < best - 1e-12) { best = d2; b1 = t1; b2 = t2; }
@@ -172,7 +191,8 @@ private:
         if (b1 < 0) return;
         auto apply = [&](int t) {
             out[order_[np[t]]] ^= 1;
-            for (int i = 0; i < rank; ++i) if (col[(size_t)t * CW + (i >> 6)] >> (i & 63) & 1ULL) out[order_[pivot_pos_[i]]] ^= 1;
+            const uint64_t* ct = colp(t);
+            for (int i = 0; i < rank; ++i) if (ct[i >> 6] >> (i & 63) & 1ULL) out[order_[pivot_pos_[i]]] ^= 1;
         };
         apply(b1); if (b2 >= 0) apply(b2);
     }
@@ -181,7 +201,7 @@ private:
     std::vector<int> row_ptr_, var_of_edge_, col_ptr_, col_edges_;
     std::vector<double> v2c_, c2v_, post_;
     std::vector<int> order_, pos_, pivot_pos_;
-    std::vector<uint64_t> M_;
+    std::vector<uint64_t> M_, colT_;
 };
 
 }  // namespace gkpbp

@@ -25,7 +25,7 @@ rescaling (dashed) is off by up to +26 % in variance at η = 0.8; the corrected 
 | `gkp_qldpc.codes` (BB) | bivariate-bicycle family [[72,12,6]] ... [[288,12,18]] (N and k verified in tests) |
 | `gkp_qldpc.stats` | Pairwise finite-size crossings with cluster bootstrap and **distance-aware pair classification** |
 | `scripts/` | Gates 0–4, resumable multiprocessing sweeps, analysis, figures |
-| `tests/` | 31 tests, about 16 s: channel math, Fock-space regression, code constructions, decoders, statistics, and the C++ core against `ldpc` (C++ tests skip if the extension is not built) |
+| `tests/` | 35 tests, about 16 s: channel math, Fock-space regression, code constructions, decoders, statistics, the C++ core against `ldpc`, and golden-output hashes for the C++ decoder (C++ tests skip if the extension is not built) |
 
 ## Results at a glance
 
@@ -85,32 +85,33 @@ This repository does not claim any hardware roadmap is feasible or infeasible. I
 to `ldpc` (z ≈ 5–6) while OSD-0 and BP matched exactly. Sweeping weight-1 over **every** non-pivot column and weight-2 pairs among the first λ fixed it.
 The test that caught this is now a regression test.
 
-**Speed.** Identical shots, priors and settings (min-sum, 100 iterations, OSD-CS 7), one core of a cloud sandbox, per-shot soft priors for the `ldpc` loop:
+**Speed.** Identical shots, priors and settings (min-sum, 100 iterations, OSD-CS 7), per-shot soft priors for the `ldpc` loop, 600 shots per point.
+Measured on the author's laptop (Ubuntu 24.04 under WSL, 12 logical cores); every row is in `data/bench/bench_ubuntu_12core_summary.csv`:
 
 ![decoder speedup](docs/fig4_decoder_speedup.png)
 
-| Qubits N | Speedup vs `ldpc` Python loop | Pure C++ (no Python), near threshold |
-|---|---|---|
-| 400 | 2.6–3.0× | 0.5–0.7 ms/shot |
-| 900 | 3.4–4.8× | 1.8–2.0 ms/shot |
-| 1600 | 4.2–14.3× | 3.9–5.0 ms/shot |
+| Qubits N | C++ core, 1 thread, near threshold | Speedup over `ldpc` loop, 1 thread | 4 threads | 8 threads |
+|---|---|---|---|---|
+| 400 | 0.5 ms/shot | 2.5–3.5× | 7.9–9.9× | 11.4–16.8× |
+| 900 | 1.4–1.5 ms/shot | 3.8–5.7× | 10.8–17.0× | 18.7–29.9× |
+| 1600 | 3.2–3.5 ms/shot | 5.1–21.5× | 14.6–67.6× | 24.4–112.0× |
 
-Failure rates agree between the two decoders on every benchmark point (|z| ≤ 0.2). The `ldpc` loop includes Python call and prior-update overhead, which is
-unavoidable for per-shot soft priors, so part of the small-N gap is API overhead; the native benchmark (`cpp/bench/bench_native.cpp`) isolates the C++ cost.
-**Multi-core.** Measured on the author's laptop (Ubuntu 24.04 under WSL, 12 logical cores), same shots and priors, 600 shots per point:
+"Near threshold" means hard σ = 0.50 and soft σ = 0.56; ranges cover four (mode, σ) points per size. The C++ times include the Python batch call.
+Failure rates agree between the two decoders on every row (|z| ≤ 0.25). The `ldpc` loop includes Python call and prior-update overhead, which is
+unavoidable for per-shot soft priors, so part of the small-N gap is API overhead; `cpp/bench/bench_native.cpp` isolates the C++ cost.
 
 ![multi-core scaling](docs/fig6_multicore_scaling.png)
 
-| Qubits N | Speedup over `ldpc` loop, 1 thread | 4 threads | 8 threads |
-|---|---|---|---|
-| 400 | 2.5–3.2× | 7.5–10.3× | 11.2–14.9× |
-| 900 | 3.3–4.7× | 9.1–14.9× | 14.5–22.7× |
-| 1600 | 4.3–16.3× | 13.0–50.1× | 16.8–77.1× |
+**Timing varies between runs.** This laptop is not a quiet benchmark machine. Compared with an earlier run of the same script
+(`data/bench/bench_ubuntu_12core_previous_run.csv`), the latest run was 14–41 % slower for the `ldpc` loop and 3–29 % slower for the C++ core on one thread, so
+speedup ratios move by tens of percent between runs, and the widest ranges (N = 1600, soft σ = 0.56, where `ldpc`'s OSD is slow) are the least stable.
+Prefer the absolute C++ times, and treat the ratios as indicative.
 
-Failure rates again agree on every row (|z| ≤ 0.25). The C++ core on its own (`cpp/bench/bench_native.cpp`, N = 1600, hard σ = 0.50, 2000 shots) takes
+An earlier native-only run (`cpp/bench/bench_native.cpp`, N = 1600, hard σ = 0.50, 2000 shots; `data/bench/native_cpp_scaling_12core.txt`) gave
 3250 µs/shot on one thread and 1818, 1124, 772 and 692 µs/shot on 2, 4, 8 and 12 threads: a speedup of 1.79×, 2.89×, 4.21× and 4.70×
-(parallel efficiency 90 %, 72 %, 53 %, 39 %). Scaling flattens beyond 8 threads. I have not investigated why (shared cores or memory bandwidth are plausible);
-the results are identical across thread counts. Reproduce with `python scripts/bench_decoders.py 16,24,32 600 1,4,8` and the native loop in `cpp/bench/`.
+(parallel efficiency 90 %, 72 %, 53 %, 39 %), plotted in the right-hand panel of the figure above. Scaling flattens beyond 8 threads. I have not investigated why
+(shared cores or memory bandwidth are plausible); the results are identical across thread counts. Reproduce the table with
+`python scripts/bench_decoders.py 16,24,32 600 1,4,8` and the native loop with the commands in `cpp/bench/`.
 
 ## Bivariate-bicycle cross-check
 
@@ -152,7 +153,7 @@ agreement between our HGP numbers and their BB numbers should be read as partly 
 git clone https://github.com/vishal1601-2005/gkp-qldpc-thresholds
 cd gkp-qldpc-thresholds
 pip install -e ".[dev]"
-pytest -q                                   # 31 tests, about 16 s (C++ tests are skipped if the extension is not built)
+pytest -q                                   # 35 tests, about 16 s (C++ tests are skipped if the extension is not built)
 
 python cpp/build.py                         # optional: compile the C++ decoder core (needs g++/clang++ and pybind11)
 python scripts/gate1_fock_check.py 10       # exact loss channel vs models (seconds)
@@ -198,7 +199,7 @@ Pass criteria were written before running, and deviations are disclosed rather t
 - **Gaussian-displacement model.** Pure loss on an approximate GKP qubit is not a Pauli channel (Harris et al.). The Fock check verifies the
   bit-flip probability of the x-marginal, not the full logical channel.
 - **BB distances are quoted, not computed**, and the BB absolute crossings disagree with a published value (see above).
-- **Benchmarks come from two machines:** the single-core figure and table use one core of a cloud sandbox; the multi-core results use one 12-logical-core laptop under WSL. Scaling beyond 8 threads is poor and unexplained.
+- **Benchmarks come from one machine:** a 12-logical-core laptop under WSL, where timings vary by tens of percent between runs (see Speed). The pure-C++ thread-scaling panel is from an earlier run than the table. Scaling beyond 8 threads is poor and unexplained.
 - **Small codes.** Random HGP(3,4), N up to about 3000, 1500 shots × 4 codes per point. Not a substitute for the large-N studies cited below.
 - **Roadmap mapping.** An aggregate over many components is not a single-mode loss. The "implied present-day loss" is a reading of one indicator
   under stated conventions, not an inference about any device.
