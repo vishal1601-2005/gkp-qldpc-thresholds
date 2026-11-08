@@ -134,6 +134,8 @@ I have not resolved why. Candidates: their crossing definition or normalisation,
 different *k* (8 vs 12). Until that is understood, the BB numbers are a consistency check on the *shift*, not a confirmation of the absolute thresholds, and the earlier
 agreement between our HGP numbers and their BB numbers should be read as partly coincidental.
 
+**Check against a recent algebraic result.** Sabo, Can and Marquis (arXiv:2608.27565) give closed-form dimension formulas for bivariate-bicycle codes. `scripts/check_bb_dimension_formula.py` (needs `pip install galois`, runs in a few seconds) compares them with k computed by GF(2) linear algebra from `bivariate_bicycle()`: (A) Theorem 81, for odd l and m (semisimple case, coprime or not), k = 2 x the number of common zeros of a and b on the grid of (l-th, m-th) roots of unity in an extension of F2: matched on 144/144 random codes; (B) the paper's explicit Examples 96, 132, 133 and 134 ([[42,2]], [[90,8]], [[162,24]], [[434,10]]) reproduce their stated k exactly; (C) Prop. 65 (coprime l, m, any parity), k = 2 deg gcd(a(z), b(z), z^(lm) - 1) with x -> z^m, y -> z^l: matched on 200/200 random codes. Note that most of the published codes in `BB_CODES` have even l or m, so they are outside the semisimple regime of Theorem 81; the check validates this repo's construction on the cases the paper covers, not those codes' distances. I have not checked the paper's distance bounds.
+
 ## Findings that may be useful to decoder people
 
 1. **The code lottery.** Random (3,4)-regular codes at n ≤ 48 have classical distance anywhere from 2 to 12 at the same size. One d = 2
