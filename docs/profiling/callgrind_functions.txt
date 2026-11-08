@@ -1,0 +1,958 @@
+--------------------------------------------------------------------------------
+Profile data file 'docs/profiling/callgrind.out' (creator: callgrind-3.22.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 69414413
+Trigger: Program termination
+Profiled target:  ./build/bench_native_portable build/inst16_small.bin 1 1 (PID 1614, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       99
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+411,289,846 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+323,244,029 (78.59%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::decode(unsigned char const*, double const*, unsigned char*)
+ 44,145,938 (10.73%)  /usr/include/c++/13/bits/stl_vector.h:gkpbp::BpOsd::decode(unsigned char const*, double const*, unsigned char*)
+ 27,928,638 ( 6.79%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+  9,698,801 ( 2.36%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int)
+    758,727 ( 0.18%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms
+    497,484 ( 0.12%)  /usr/include/c++/13/bits/stl_algo.h:int* std::__move_merge<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+    490,784 ( 0.12%)  ./elf/./elf/dl-lookup.c:do_lookup_x
+    485,870 ( 0.12%)  ./elf/../sysdeps/generic/dl-new-hash.h:_dl_lookup_symbol_x
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/13/bits/stl_algo.h
+--------------------------------------------------------------------------------
+Ir               
+
+-- line 1791 ----------------------------------------
+      .               void
+      .               __unguarded_linear_insert(_RandomAccessIterator __last,
+      .           			      _Compare __comp)
+      .               {
+      .                 typename iterator_traits<_RandomAccessIterator>::value_type
+      .           	__val = _GLIBCXX_MOVE(*__last);
+      .                 _RandomAccessIterator __next = __last;
+      .                 --__next;
+ 94,062 ( 0.02%)        while (__comp(__val, __next))
+      .           	{
+ 16,525 ( 0.00%)  	  *__last = _GLIBCXX_MOVE(*__next);
+      .           	  __last = __next;
+      .           	  --__next;
+      .           	}
+ 12,298 ( 0.00%)        *__last = _GLIBCXX_MOVE(__val);
+      .               }
+      .           
+      .             /// This is a helper function for the sort routine.
+      .             template<typename _RandomAccessIterator, typename _Compare>
+      .               _GLIBCXX20_CONSTEXPR
+      .               void
+ 28,420 ( 0.01%)      __insertion_sort(_RandomAccessIterator __first,
+      .           		     _RandomAccessIterator __last, _Compare __comp)
+      .               {
+  5,684 ( 0.00%)        if (__first == __last) return;
+      .           
+ 58,800 ( 0.01%)        for (_RandomAccessIterator __i = __first + 1; __i != __last; ++__i)
+      .           	{
+ 50,274 ( 0.01%)  	  if (__comp(__i, __first))
+      .           	    {
+      .           	      typename iterator_traits<_RandomAccessIterator>::value_type
+      .           		__val = _GLIBCXX_MOVE(*__i);
+      .           	      _GLIBCXX_MOVE_BACKWARD3(__first, __i, __i + 1);
+  4,460 ( 0.00%)  	      *__first = _GLIBCXX_MOVE(__val);
+      .           	    }
+      .           	  else
+      .           	    std::__unguarded_linear_insert(__i,
+      .           				__gnu_cxx::__ops::__val_comp_iter(__comp));
+      .           	}
+ 22,736 ( 0.01%)      }
+      .           
+      .             /// This is a helper function for the sort routine.
+      .             template<typename _RandomAccessIterator, typename _Compare>
+      .               _GLIBCXX20_CONSTEXPR
+      .               inline void
+      .               __unguarded_insertion_sort(_RandomAccessIterator __first,
+      .           			       _RandomAccessIterator __last, _Compare __comp)
+      .               {
+-- line 1838 ----------------------------------------
+-- line 2290 ----------------------------------------
+      .             /// This is a helper function for the __merge_adaptive routines.
+      .             template<typename _InputIterator1, typename _InputIterator2,
+      .           	   typename _OutputIterator, typename _Compare>
+      .               void
+      .               __move_merge_adaptive(_InputIterator1 __first1, _InputIterator1 __last1,
+      .           			  _InputIterator2 __first2, _InputIterator2 __last2,
+      .           			  _OutputIterator __result, _Compare __comp)
+      .               {
+ 76,348 ( 0.02%)        while (__first1 != __last1 && __first2 != __last2)
+      .           	{
+ 57,180 ( 0.01%)  	  if (__comp(__first2, __first1))
+      .           	    {
+      .           	      *__result = _GLIBCXX_MOVE(*__first2);
+      .           	      ++__first2;
+      .           	    }
+      .           	  else
+      .           	    {
+  9,793 ( 0.00%)  	      *__result = _GLIBCXX_MOVE(*__first1);
+  9,793 ( 0.00%)  	      ++__first1;
+      .           	    }
+      .           	  ++__result;
+      .           	}
+     10 ( 0.00%)        if (__first1 != __last1)
+      .           	_GLIBCXX_MOVE3(__first1, __last1, __result);
+      .               }
+      .           
+      .             /// This is a helper function for the __merge_adaptive routines.
+      .             template<typename _BidirectionalIterator1, typename _BidirectionalIterator2,
+      .           	   typename _BidirectionalIterator3, typename _Compare>
+      .               void
+      .               __move_merge_adaptive_backward(_BidirectionalIterator1 __first1,
+-- line 2320 ----------------------------------------
+-- line 2393 ----------------------------------------
+      .                 else
+      .           	return std::rotate(__first, __middle, __last);
+      .               }
+      .           
+      .             /// This is a helper function for the merge routines.
+      .             template<typename _BidirectionalIterator, typename _Distance,
+      .           	   typename _Pointer, typename _Compare>
+      .               void
+    539 ( 0.00%)      __merge_adaptive(_BidirectionalIterator __first,
+      .           		     _BidirectionalIterator __middle,
+      .           		     _BidirectionalIterator __last,
+      .           		     _Distance __len1, _Distance __len2,
+      .           		     _Pointer __buffer, _Compare __comp)
+      .               {
+     98 ( 0.00%)        if (__len1 <= __len2)
+      .           	{
+      .           	  _Pointer __buffer_end = _GLIBCXX_MOVE3(__first, __middle, __buffer);
+      .           	  std::__move_merge_adaptive(__buffer, __buffer_end, __middle, __last,
+      .           				     __first, __comp);
+      .           	}
+      .                 else
+      .           	{
+      .           	  _Pointer __buffer_end = _GLIBCXX_MOVE3(__middle, __last, __buffer);
+      .           	  std::__move_merge_adaptive_backward(__first, __middle, __buffer,
+      .           					      __buffer_end, __last, __comp);
+      .           	}
+    393 ( 0.00%)      }
+      .           
+      .             template<typename _BidirectionalIterator, typename _Distance,
+      .           	   typename _Pointer, typename _Compare>
+      .               void
+      .               __merge_adaptive_resize(_BidirectionalIterator __first,
+      .           			    _BidirectionalIterator __middle,
+      .           			    _BidirectionalIterator __last,
+      .           			    _Distance __len1, _Distance __len2,
+-- line 2427 ----------------------------------------
+-- line 2641 ----------------------------------------
+      .           			   __gnu_cxx::__ops::__iter_comp_iter(__comp));
+      .               }
+      .           
+      .           
+      .             /// This is a helper function for the __merge_sort_loop routines.
+      .             template<typename _InputIterator, typename _OutputIterator,
+      .           	   typename _Compare>
+      .               _OutputIterator
+ 22,148 ( 0.01%)      __move_merge(_InputIterator __first1, _InputIterator __last1,
+      .           		 _InputIterator __first2, _InputIterator __last2,
+      .           		 _OutputIterator __result, _Compare __comp)
+      .               {
+353,274 ( 0.09%)        while (__first1 != __last1 && __first2 != __last2)
+      .           	{
+275,688 ( 0.07%)  	  if (__comp(__first2, __first1))
+      .           	    {
+ 15,896 ( 0.00%)  	      *__result = _GLIBCXX_MOVE(*__first2);
+ 15,896 ( 0.00%)  	      ++__first2;
+      .           	    }
+      .           	  else
+      .           	    {
+ 28,122 ( 0.01%)  	      *__result = _GLIBCXX_MOVE(*__first1);
+ 18,477 ( 0.00%)  	      ++__first1;
+      .           	    }
+ 79,486 ( 0.02%)  	  ++__result;
+      .           	}
+      .                 return _GLIBCXX_MOVE3(__first2, __last2,
+      .           			    _GLIBCXX_MOVE3(__first1, __last1,
+      .           					   __result));
+ 12,152 ( 0.00%)      }
+      .           
+      .             template<typename _RandomAccessIterator1, typename _RandomAccessIterator2,
+      .           	   typename _Distance, typename _Compare>
+      .               void
+      .               __merge_sort_loop(_RandomAccessIterator1 __first,
+      .           		      _RandomAccessIterator1 __last,
+      .           		      _RandomAccessIterator2 __result, _Distance __step_size,
+      .           		      _Compare __comp)
+      .               {
+    588 ( 0.00%)        const _Distance __two_step = 2 * __step_size;
+      .           
+  9,310 ( 0.00%)        while (__last - __first >= __two_step)
+      .           	{
+ 13,818 ( 0.00%)  	  __result = std::__move_merge(__first, __first + __step_size,
+528,642 ( 0.13%)  => /usr/include/c++/13/bits/stl_algo.h:int* std::__move_merge<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (1,666x)
+388,553 ( 0.09%)  => /usr/include/c++/13/bits/stl_algo.h:__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > > std::__move_merge<int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(int*, int*, int*, int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (784x)
+  2,744 ( 0.00%)  				       __first + __step_size,
+    196 ( 0.00%)  				       __first + __two_step,
+      .           				       __result, __comp);
+      .           	  __first += __two_step;
+      .           	}
+      .                 __step_size = std::min(_Distance(__last - __first), __step_size);
+      .           
+  3,626 ( 0.00%)        std::__move_merge(__first, __first + __step_size,
+341,264 ( 0.08%)  => /usr/include/c++/13/bits/stl_algo.h:int* std::__move_merge<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (294x)
+126,925 ( 0.03%)  => /usr/include/c++/13/bits/stl_algo.h:__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > > std::__move_merge<int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(int*, int*, int*, int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (294x)
+      .           			__first + __step_size, __last, __result, __comp);
+      .               }
+      .           
+      .             template<typename _RandomAccessIterator, typename _Distance,
+      .           	   typename _Compare>
+      .               _GLIBCXX20_CONSTEXPR
+      .               void
+      .               __chunk_insertion_sort(_RandomAccessIterator __first,
+      .           			   _RandomAccessIterator __last,
+      .           			   _Distance __chunk_size, _Compare __comp)
+      .               {
+  5,880 ( 0.00%)        while (__last - __first >= __chunk_size)
+      .           	{
+  8,232 ( 0.00%)  	  std::__insertion_sort(__first, __first + __chunk_size, __comp);
+592,045 ( 0.14%)  => /usr/include/c++/13/bits/stl_algo.h:void std::__insertion_sort<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (2,744x)
+      .           	  __first += __chunk_size;
+      .           	}
+    392 ( 0.00%)        std::__insertion_sort(__first, __last, __comp);
+ 10,555 ( 0.00%)  => /usr/include/c++/13/bits/stl_algo.h:void std::__insertion_sort<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (98x)
+      .               }
+      .           
+      .             enum { _S_chunk_size = 7 };
+      .           
+      .             template<typename _RandomAccessIterator, typename _Pointer, typename _Compare>
+      .               void
+  1,176 ( 0.00%)      __merge_sort_with_buffer(_RandomAccessIterator __first,
+      .           			     _RandomAccessIterator __last,
+      .           			     _Pointer __buffer, _Compare __comp)
+      .               {
+      .                 typedef typename iterator_traits<_RandomAccessIterator>::difference_type
+      .           	_Distance;
+      .           
+      .                 const _Distance __len = __last - __first;
+    196 ( 0.00%)        const _Pointer __buffer_last = __buffer + __len;
+      .           
+    294 ( 0.00%)        _Distance __step_size = _S_chunk_size;
+      .                 std::__chunk_insertion_sort(__first, __last, __step_size, __comp);
+      .           
+    588 ( 0.00%)        while (__step_size < __len)
+      .           	{
+      .           	  std::__merge_sort_loop(__first, __last, __buffer,
+      .           				 __step_size, __comp);
+      .           	  __step_size *= 2;
+      .           	  std::__merge_sort_loop(__buffer, __buffer_last, __first,
+      .           				 __step_size, __comp);
+      .           	  __step_size *= 2;
+      .           	}
+    686 ( 0.00%)      }
+      .           
+      .             template<typename _RandomAccessIterator, typename _Pointer, typename _Compare>
+      .               void
+    539 ( 0.00%)      __stable_sort_adaptive(_RandomAccessIterator __first,
+      .           			   _RandomAccessIterator __middle,
+      .           			   _RandomAccessIterator __last,
+      .           			   _Pointer __buffer, _Compare __comp)
+      .               {
+    147 ( 0.00%)        std::__merge_sort_with_buffer(__first, __middle, __buffer, __comp);
+1,024,384 ( 0.25%)  => /usr/include/c++/13/bits/stl_algo.h:void std::__merge_sort_with_buffer<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (49x)
+    245 ( 0.00%)        std::__merge_sort_with_buffer(__middle, __last, __buffer, __comp);
+1,037,198 ( 0.25%)  => /usr/include/c++/13/bits/stl_algo.h:void std::__merge_sort_with_buffer<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (49x)
+      .           
+    392 ( 0.00%)        std::__merge_adaptive(__first, __middle, __last,
+302,585 ( 0.07%)  => /usr/include/c++/13/bits/stl_algo.h:void std::__merge_adaptive<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, long, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, long, long, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (49x)
+      .           			    __middle - __first, __last - __middle,
+      .           			    __buffer, __comp);
+    392 ( 0.00%)      }
+      .           
+      .             template<typename _RandomAccessIterator, typename _Pointer,
+      .           	   typename _Distance, typename _Compare>
+      .               void
+      .               __stable_sort_adaptive_resize(_RandomAccessIterator __first,
+      .           				  _RandomAccessIterator __last,
+      .           				  _Pointer __buffer, _Distance __buffer_size,
+      .           				  _Compare __comp)
+-- line 2761 ----------------------------------------
+-- line 5030 ----------------------------------------
+      .           
+      .                 if (__first == __last)
+      .           	return;
+      .           
+      .           #if _GLIBCXX_HOSTED
+      .                 typedef _Temporary_buffer<_RandomAccessIterator, _ValueType> _TmpBuf;
+      .                 // __stable_sort_adaptive sorts the range in two halves,
+      .                 // so the buffer only needs to fit half the range at once.
+    245 ( 0.00%)        _TmpBuf __buf(__first, (__last - __first + 1) / 2);
+      .           
+    392 ( 0.00%)        if (__builtin_expect(__buf.requested_size() == __buf.size(), true))
+    294 ( 0.00%)  	std::__stable_sort_adaptive(__first,
+2,366,127 ( 0.58%)  => /usr/include/c++/13/bits/stl_algo.h:void std::__stable_sort_adaptive<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>) (49x)
+      .           				    __first + _DistanceType(__buf.size()),
+      .           				    __last, __buf.begin(), __comp);
+      .                 else if (__builtin_expect(__buf.begin() == 0, false))
+      .           	std::__inplace_stable_sort(__first, __last, __comp);
+      .                 else
+      .           	std::__stable_sort_adaptive_resize(__first, __last, __buf.begin(),
+      .           					   _DistanceType(__buf.size()), __comp);
+      .           #else
+-- line 5049 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/13/bits/stl_vector.h
+--------------------------------------------------------------------------------
+Ir                  
+
+-- line 91 ----------------------------------------
+         .           
+         .                 struct _Vector_impl_data
+         .                 {
+         .           	pointer _M_start;
+         .           	pointer _M_finish;
+         .           	pointer _M_end_of_storage;
+         .           
+         .           	_GLIBCXX20_CONSTEXPR
+         1 ( 0.00%)  	_Vector_impl_data() _GLIBCXX_NOEXCEPT
+       551 ( 0.00%)  	: _M_start(), _M_finish(), _M_end_of_storage()
+         .           	{ }
+         .           
+         .           #if __cplusplus >= 201103L
+         .           	_GLIBCXX20_CONSTEXPR
+         .           	_Vector_impl_data(_Vector_impl_data&& __x) noexcept
+         .           	: _M_start(__x._M_start), _M_finish(__x._M_finish),
+         .           	  _M_end_of_storage(__x._M_end_of_storage)
+         .           	{ __x._M_start = __x._M_finish = __x._M_end_of_storage = pointer(); }
+         .           #endif
+         .           
+         .           	_GLIBCXX20_CONSTEXPR
+         .           	void
+         .           	_M_copy_data(_Vector_impl_data const& __x) _GLIBCXX_NOEXCEPT
+         .           	{
+        10 ( 0.00%)  	  _M_start = __x._M_start;
+         5 ( 0.00%)  	  _M_finish = __x._M_finish;
+        10 ( 0.00%)  	  _M_end_of_storage = __x._M_end_of_storage;
+         .           	}
+         .           
+         .           	_GLIBCXX20_CONSTEXPR
+         .           	void
+         .           	_M_swap_data(_Vector_impl_data& __x) _GLIBCXX_NOEXCEPT
+         .           	{
+         .           	  // Do not use std::swap(_M_start, __x._M_start), etc as it loses
+         .           	  // information used by TBAA.
+-- line 125 ----------------------------------------
+-- line 362 ----------------------------------------
+         .                 : _M_impl(_Tp_alloc_type(__a), std::move(__x._M_impl))
+         .                 { }
+         .           #endif
+         .           
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 ~_Vector_base() _GLIBCXX_NOEXCEPT
+         .                 {
+         .           	_M_deallocate(_M_impl._M_start,
+       759 ( 0.00%)  		      _M_impl._M_end_of_storage - _M_impl._M_start);
+         .                 }
+         .           
+         .               public:
+         .                 _Vector_impl _M_impl;
+         .           
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 pointer
+         .                 _M_allocate(size_t __n)
+         .                 {
+         .           	typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Tr;
+       275 ( 0.00%)  	return __n != 0 ? _Tr::allocate(_M_impl, __n) : pointer();
+         .                 }
+         .           
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 _M_deallocate(pointer __p, size_t __n)
+         .                 {
+         .           	typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Tr;
+       485 ( 0.00%)  	if (__p)
+         .           	  _Tr::deallocate(_M_impl, __p, __n);
+         .                 }
+         .           
+         .               protected:
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 _M_create_storage(size_t __n)
+         .                 {
+       155 ( 0.00%)  	this->_M_impl._M_start = this->_M_allocate(__n);
+         .           	this->_M_impl._M_finish = this->_M_impl._M_start;
+       476 ( 0.00%)  	this->_M_impl._M_end_of_storage = this->_M_impl._M_start + __n;
+         .                 }
+         .               };
+         .           
+         .             /**
+         .              *  @brief A standard container which offers fixed time access to
+         .              *  individual elements in any order.
+         .              *
+         .              *  @ingroup sequences
+-- line 408 ----------------------------------------
+-- line 548 ----------------------------------------
+         .                  *  @param  __n  The number of elements to initially create.
+         .                  *  @param  __a  An allocator.
+         .                  *
+         .                  *  This constructor fills the %vector with @a __n default
+         .                  *  constructed elements.
+         .                  */
+         .                 explicit
+         .                 _GLIBCXX20_CONSTEXPR
+        34 ( 0.00%)        vector(size_type __n, const allocator_type& __a = allocator_type())
+         .                 : _Base(_S_check_init_len(__n, __a), __a)
+        34 ( 0.00%)        { _M_default_initialize(__n); }
+         .           
+         .                 /**
+         .                  *  @brief  Creates a %vector with copies of an exemplar element.
+         .                  *  @param  __n  The number of elements to initially create.
+         .                  *  @param  __value  An element to copy.
+         .                  *  @param  __a  An allocator.
+         .                  *
+         .                  *  This constructor fills the %vector with @a __n copies of @a __value.
+-- line 566 ----------------------------------------
+-- line 725 ----------------------------------------
+         .           
+         .                 /**
+         .                  *  The dtor only erases the elements, and note that if the
+         .                  *  elements themselves are pointers, the pointed-to memory is
+         .                  *  not touched in any way.  Managing the pointer is the user's
+         .                  *  responsibility.
+         .                  */
+         .                 _GLIBCXX20_CONSTEXPR
+         8 ( 0.00%)        ~vector() _GLIBCXX_NOEXCEPT
+         .                 {
+         .           	std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+         .           		      _M_get_Tp_allocator());
+         .           	_GLIBCXX_ASAN_ANNOTATE_BEFORE_DEALLOC;
+         .                 }
+         .           
+         .                 /**
+         .                  *  @brief  %Vector assignment operator.
+-- line 741 ----------------------------------------
+-- line 801 ----------------------------------------
+         .                  *  This function fills a %vector with @a __n copies of the given
+         .                  *  value.  Note that the assignment completely changes the
+         .                  *  %vector and that the resulting %vector's size is the same as
+         .                  *  the number of elements assigned.
+         .                  */
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 assign(size_type __n, const value_type& __val)
+       164 ( 0.00%)        { _M_fill_assign(__n, __val); }
+   166,599 ( 0.04%)  => /usr/include/c++/13/bits/vector.tcc:std::vector<unsigned long, std::allocator<unsigned long> >::_M_fill_assign(unsigned long, unsigned long const&) (49x)
+         .           
+         .                 /**
+         .                  *  @brief  Assigns a range to a %vector.
+         .                  *  @param  __first  An input iterator.
+         .                  *  @param  __last   An input iterator.
+         .                  *
+         .                  *  This function fills a %vector with copies of the elements in the
+         .                  *  range [__first,__last).
+-- line 817 ----------------------------------------
+-- line 820 ----------------------------------------
+         .                  *  that the resulting %vector's size is the same as the number
+         .                  *  of elements assigned.
+         .                  */
+         .           #if __cplusplus >= 201103L
+         .                 template<typename _InputIterator,
+         .           	       typename = std::_RequireInputIter<_InputIterator>>
+         .           	_GLIBCXX20_CONSTEXPR
+         .           	void
+         1 ( 0.00%)  	assign(_InputIterator __first, _InputIterator __last)
+         4 ( 0.00%)  	{ _M_assign_aux(__first, __last, std::__iterator_category(__first)); }
+     1,188 ( 0.00%)  => /usr/include/c++/13/bits/vector.tcc:void std::vector<int, std::allocator<int> >::_M_assign_aux<int const*>(int const*, int const*, std::forward_iterator_tag) (2x)
+         .           #else
+         .                 template<typename _InputIterator>
+         .           	void
+         .           	assign(_InputIterator __first, _InputIterator __last)
+         .           	{
+         .           	  // Check whether it's an integral type.  If so, it's not an iterator.
+         .           	  typedef typename std::__is_integer<_InputIterator>::__type _Integral;
+         .           	  _M_assign_dispatch(__first, __last, _Integral());
+-- line 837 ----------------------------------------
+-- line 985 ----------------------------------------
+         .                 { return const_reverse_iterator(begin()); }
+         .           #endif
+         .           
+         .                 // capacity
+         .                 /**  Returns the number of elements in the %vector.  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 size_type
+         .                 size() const _GLIBCXX_NOEXCEPT
+     1,334 ( 0.00%)        { return size_type(this->_M_impl._M_finish - this->_M_impl._M_start); }
+         .           
+         .                 /**  Returns the size() of the largest possible %vector.  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 size_type
+         .                 max_size() const _GLIBCXX_NOEXCEPT
+         .                 { return _S_max_size(_M_get_Tp_allocator()); }
+         .           
+         .           #if __cplusplus >= 201103L
+-- line 1001 ----------------------------------------
+-- line 1007 ----------------------------------------
+         .                  *  number of elements.  If the number is smaller than the
+         .                  *  %vector's current size the %vector is truncated, otherwise
+         .                  *  default constructed elements are appended.
+         .                  */
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 resize(size_type __new_size)
+         .                 {
+       297 ( 0.00%)  	if (__new_size > size())
+        13 ( 0.00%)  	  _M_default_append(__new_size - size());
+    11,028 ( 0.00%)  => /usr/include/c++/13/bits/vector.tcc:std::vector<unsigned long, std::allocator<unsigned long> >::_M_default_append(unsigned long) (1x)
+       288 ( 0.00%)  	else if (__new_size < size())
+         .           	  _M_erase_at_end(this->_M_impl._M_start + __new_size);
+         .                 }
+         .           
+         .                 /**
+         .                  *  @brief  Resizes the %vector to the specified number of elements.
+         .                  *  @param  __new_size  Number of elements the %vector should contain.
+         .                  *  @param  __x  Data with which new elements should be populated.
+         .                  *
+-- line 1025 ----------------------------------------
+-- line 1072 ----------------------------------------
+         .                 /**
+         .                  *  Returns the total number of elements that the %vector can
+         .                  *  hold before needing to allocate more memory.
+         .                  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 size_type
+         .                 capacity() const _GLIBCXX_NOEXCEPT
+         .                 { return size_type(this->_M_impl._M_end_of_storage
+       218 ( 0.00%)  			 - this->_M_impl._M_start); }
+         .           
+         .                 /**
+         .                  *  Returns true if the %vector is empty.  (Thus begin() would
+         .                  *  equal end().)
+         .                  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 bool
+         .                 empty() const _GLIBCXX_NOEXCEPT
+-- line 1088 ----------------------------------------
+-- line 1118 ----------------------------------------
+         .                  *
+         .                  *  This operator allows for easy, array-style, data access.
+         .                  *  Note that data access with this operator is unchecked and
+         .                  *  out_of_range lookups are not defined. (For checked lookups
+         .                  *  see at().)
+         .                  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 reference
+ 3,930,400 ( 0.96%)        operator[](size_type __n) _GLIBCXX_NOEXCEPT
+         .                 {
+         .           	__glibcxx_requires_subscript(__n);
+39,453,278 ( 9.59%)  	return *(this->_M_impl._M_start + __n);
+         .                 }
+         .           
+         .                 /**
+         .                  *  @brief  Subscript access to the data contained in the %vector.
+         .                  *  @param __n The index of the element for which data should be
+         .                  *  accessed.
+         .                  *  @return  Read-only (constant) reference to data.
+         .                  *
+-- line 1137 ----------------------------------------
+-- line 1140 ----------------------------------------
+         .                  *  out_of_range lookups are not defined. (For checked lookups
+         .                  *  see at().)
+         .                  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 const_reference
+         .                 operator[](size_type __n) const _GLIBCXX_NOEXCEPT
+         .                 {
+         .           	__glibcxx_requires_subscript(__n);
+ 1,048,952 ( 0.26%)  	return *(this->_M_impl._M_start + __n);
+         .                 }
+         .           
+         .               protected:
+         .                 /// Safety check used only from at().
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 _M_range_check(size_type __n) const
+         .                 {
+-- line 1156 ----------------------------------------
+-- line 1253 ----------------------------------------
+         .                 // data access
+         .                 /**
+         .                  *   Returns a pointer such that [data(), data() + size()) is a valid
+         .                  *   range.  For a non-empty %vector, data() == &front().
+         .                  */
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 _Tp*
+         .                 data() _GLIBCXX_NOEXCEPT
+         4 ( 0.00%)        { return _M_data_ptr(this->_M_impl._M_start); }
+         .           
+         .                 _GLIBCXX_NODISCARD _GLIBCXX20_CONSTEXPR
+         .                 const _Tp*
+         .                 data() const _GLIBCXX_NOEXCEPT
+         .                 { return _M_data_ptr(this->_M_impl._M_start); }
+         .           
+         .                 // modifiers
+         .                 /**
+-- line 1269 ----------------------------------------
+-- line 1275 ----------------------------------------
+         .                  *  to it.  Due to the nature of a %vector this operation can be
+         .                  *  done in constant time if the %vector has preallocated space
+         .                  *  available.
+         .                  */
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 push_back(const value_type& __x)
+         .                 {
+    48,608 ( 0.01%)  	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
+         .           	  {
+         .           	    _GLIBCXX_ASAN_ANNOTATE_GROW(1);
+         .           	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
+         .           				     __x);
+    49,374 ( 0.01%)  	    ++this->_M_impl._M_finish;
+         .           	    _GLIBCXX_ASAN_ANNOTATE_GREW(1);
+         .           	  }
+         .           	else
+        54 ( 0.00%)  	  _M_realloc_insert(end(), __x);
+     3,481 ( 0.00%)  => /usr/include/c++/13/bits/vector.tcc:void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) (9x)
+         .                 }
+         .           
+         .           #if __cplusplus >= 201103L
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 push_back(value_type&& __x)
+         .                 { emplace_back(std::move(__x)); }
+         .           
+-- line 1300 ----------------------------------------
+-- line 1598 ----------------------------------------
+         .                  *  Erases all the elements.  Note that this function only erases the
+         .                  *  elements, and that if the elements themselves are pointers, the
+         .                  *  pointed-to memory is not touched in any way.  Managing the pointer is
+         .                  *  the user's responsibility.
+         .                  */
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 clear() _GLIBCXX_NOEXCEPT
+        49 ( 0.00%)        { _M_erase_at_end(this->_M_impl._M_start); }
+         .           
+         .               protected:
+         .                 /**
+         .                  *  Memory expansion handler.  Uses the member allocation function to
+         .                  *  obtain @a n bytes of memory, and then copies [first,last) into it.
+         .                  */
+         .                 template<typename _ForwardIterator>
+         .           	_GLIBCXX20_CONSTEXPR
+-- line 1614 ----------------------------------------
+-- line 1684 ----------------------------------------
+         .                 template<typename _ForwardIterator>
+         .           	_GLIBCXX20_CONSTEXPR
+         .           	void
+         .           	_M_range_initialize(_ForwardIterator __first, _ForwardIterator __last,
+         .           			    std::forward_iterator_tag)
+         .           	{
+         .           	  const size_type __n = std::distance(__first, __last);
+         .           	  this->_M_impl._M_start
+         1 ( 0.00%)  	    = this->_M_allocate(_S_check_init_len(__n, _M_get_Tp_allocator()));
+         2 ( 0.00%)  	  this->_M_impl._M_end_of_storage = this->_M_impl._M_start + __n;
+         1 ( 0.00%)  	  this->_M_impl._M_finish =
+         .           	    std::__uninitialized_copy_a(__first, __last,
+         .           					this->_M_impl._M_start,
+         .           					_M_get_Tp_allocator());
+         .           	}
+         .           
+         .                 // Called by the first initialize_dispatch above and by the
+         .                 // vector(n,value,a) constructor.
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         5 ( 0.00%)        _M_fill_initialize(size_type __n, const value_type& __value)
+         .                 {
+        49 ( 0.00%)  	this->_M_impl._M_finish =
+         .           	  std::__uninitialized_fill_n_a(this->_M_impl._M_start, __n, __value,
+         .           					_M_get_Tp_allocator());
+         .                 }
+         .           
+         .           #if __cplusplus >= 201103L
+         .                 // Called by the vector(n) constructor.
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 _M_default_initialize(size_type __n)
+         .                 {
+       106 ( 0.00%)  	this->_M_impl._M_finish =
+         .           	  std::__uninitialized_default_n_a(this->_M_impl._M_start, __n,
+         .           					   _M_get_Tp_allocator());
+         .                 }
+         .           #endif
+         .           
+         .                 // Internal assign functions follow.  The *_aux functions do the actual
+         .                 // assignment work for the range versions.
+         .           
+-- line 1725 ----------------------------------------
+-- line 1890 ----------------------------------------
+         .                 { return _M_insert_rval(__position, std::move(__v)); }
+         .           #endif
+         .           
+         .                 // Called by _M_fill_insert, _M_insert_aux etc.
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 size_type
+         .                 _M_check_len(size_type __n, const char* __s) const
+         .                 {
+        35 ( 0.00%)  	if (max_size() - size() < __n)
+         .           	  __throw_length_error(__N(__s));
+         .           
+        16 ( 0.00%)  	const size_type __len = size() + (std::max)(size(), __n);
+        60 ( 0.00%)  	return (__len < size() || __len > max_size()) ? max_size() : __len;
+         .                 }
+         .           
+         .                 // Called by constructors to check initial size.
+         .                 static _GLIBCXX20_CONSTEXPR size_type
+         .                 _S_check_init_len(size_type __n, const allocator_type& __a)
+         .                 {
+       240 ( 0.00%)  	if (__n > _S_max_size(_Tp_alloc_type(__a)))
+         .           	  __throw_length_error(
+         .           	      __N("cannot create std::vector larger than max_size()"));
+         .           	return __n;
+         .                 }
+         .           
+         .                 static _GLIBCXX20_CONSTEXPR size_type
+         .                 _S_max_size(const _Tp_alloc_type& __a) _GLIBCXX_NOEXCEPT
+         .                 {
+-- line 1917 ----------------------------------------
+-- line 1927 ----------------------------------------
+         .                 // Internal erase functions follow.
+         .           
+         .                 // Called by erase(q1,q2), clear(), resize(), _M_fill_assign,
+         .                 // _M_assign_aux.
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 void
+         .                 _M_erase_at_end(pointer __pos) _GLIBCXX_NOEXCEPT
+         .                 {
+       194 ( 0.00%)  	if (size_type __n = this->_M_impl._M_finish - __pos)
+         .           	  {
+         .           	    std::_Destroy(__pos, this->_M_impl._M_finish,
+         .           			  _M_get_Tp_allocator());
+        48 ( 0.00%)  	    this->_M_impl._M_finish = __pos;
+         .           	    _GLIBCXX_ASAN_ANNOTATE_SHRINK(__n);
+         .           	  }
+         .                 }
+         .           
+         .                 _GLIBCXX20_CONSTEXPR
+         .                 iterator
+         .                 _M_erase(iterator __position);
+         .           
+-- line 1947 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: cpp/include/gkpbp/decoder.hpp
+--------------------------------------------------------------------------------
+Ir                  
+
+-- line 24 ----------------------------------------
+         .               bool osd_used = false;
+         .               int iterations = 0;
+         .           };
+         .           
+         .           // In-place 64x64 bit-matrix transpose (Hacker's Delight 7-3). With rows fed in reversed order and columns read in reversed order
+         .           // (see osd_cs) it maps LSB-first row words to LSB-first column words.
+         .           static inline void transpose64(uint64_t a[64]) {
+         .               int j, k; uint64_t m, t;
+    50,421 ( 0.01%)      for (j = 32, m = 0x00000000FFFFFFFFULL; j; j >>= 1, m ^= m << j) {
+   814,968 ( 0.20%)          for (k = 0; k < 64; k = ((k | j) + 1) & ~j) {
+ 1,975,680 ( 0.48%)              t = (a[k] ^ (a[k | j] >> j)) & m;
+   790,272 ( 0.19%)              a[k] ^= t; a[k | j] ^= (t << j);
+         .                   }
+         .               }
+         .           }
+         .           
+         .           class BpOsd {
+         .           public:
+         .               // indptr/indices: CSR of the check matrix H (m x n). osd_order: -1 = BP only, 0 = OSD-0, >0 = OSD-CS(order).
+        18 ( 0.00%)      BpOsd(int m, int n, const int32_t* indptr, const int32_t* indices, int max_iter = 100, double ms_scaling = 0.625, int osd_order = -1)
+         9 ( 0.00%)          : m_(m), n_(n), max_iter_(max_iter), alpha_(ms_scaling), osd_order_(osd_order) {
+         4 ( 0.00%)          row_ptr_.assign(indptr, indptr + m + 1);
+         3 ( 0.00%)          const int E = row_ptr_[m];
+         5 ( 0.00%)          var_of_edge_.assign(indices, indices + E);
+         3 ( 0.00%)          col_ptr_.assign(n + 1, 0);
+     4,037 ( 0.00%)          for (int e = 0; e < E; ++e) {
+     6,720 ( 0.00%)              if (var_of_edge_[e] < 0 || var_of_edge_[e] >= n) throw std::invalid_argument("column index out of range");
+     4,032 ( 0.00%)              col_ptr_[var_of_edge_[e] + 1]++;
+         .                   }
+     2,002 ( 0.00%)          for (int j = 0; j < n; ++j) col_ptr_[j + 1] += col_ptr_[j];
+         1 ( 0.00%)          col_edges_.resize(E);
+         .                   std::vector<int> fill(col_ptr_.begin(), col_ptr_.end() - 1);
+       583 ( 0.00%)          for (int i = 0; i < m; ++i)
+    11,328 ( 0.00%)              for (int e = row_ptr_[i]; e < row_ptr_[i + 1]; ++e) col_edges_[fill[var_of_edge_[e]]++] = e;
+         4 ( 0.00%)          v2c_.assign(E, 0.0); c2v_.assign(E, 0.0); post_.assign(n, 0.0);
+         5 ( 0.00%)          W_ = (n + 1 + 63) / 64;
+         7 ( 0.00%)      }
+         .           
+         .               int m() const { return m_; }
+         .               int n() const { return n_; }
+         .           
+       750 ( 0.00%)      Result decode(const uint8_t* syndrome, const double* llr, uint8_t* out) {
+       200 ( 0.00%)          Result res;
+       150 ( 0.00%)          const int E = row_ptr_[m_];
+         .                   const double INF = std::numeric_limits<double>::infinity();
+   403,300 ( 0.10%)          for (int e = 0; e < E; ++e) v2c_[e] = llr[var_of_edge_[e]];
+         .                   std::fill(c2v_.begin(), c2v_.end(), 0.0);
+    80,250 ( 0.02%)          for (int j = 0; j < n_; ++j) out[j] = 0;
+    24,662 ( 0.01%)          for (int it = 1; it <= max_iter_; ++it) {
+ 2,844,727 ( 0.69%)              for (int i = 0; i < m_; ++i) {                       // check -> variable (normalised min-sum)
+ 1,886,592 ( 0.46%)                  const int b = row_ptr_[i], f = row_ptr_[i + 1];
+ 1,886,592 ( 0.46%)                  int neg = syndrome[i] & 1;
+ 6,163,259 ( 1.50%)                  double min1 = INF, min2 = INF; int arg = -1;
+21,695,808 ( 5.28%)                  for (int e = b; e < f; ++e) {
+ 6,603,072 ( 1.61%)                      const double v = v2c_[e];
+26,427,027 ( 6.43%)                      if (v <= 0) neg ^= 1;
+ 6,603,072 ( 1.61%)                      const double a = std::fabs(v);
+26,412,288 ( 6.42%)                      if (a < min1) { min2 = min1; min1 = a; arg = e; } else if (a < min2) { min2 = a; }
+         .                           }
+19,809,216 ( 4.82%)                  for (int e = b; e < f; ++e) {
+19,809,216 ( 4.82%)                      const int s = neg ^ (v2c_[e] <= 0 ? 1 : 0);
+21,695,808 ( 5.28%)                      const double mag = (e == arg) ? min2 : min1;
+40,971,304 ( 9.96%)                      c2v_[e] = (s ? -1.0 : 1.0) * alpha_ * mag;
+         .                           }
+         .                       }
+ 7,880,452 ( 1.92%)              for (int j = 0; j < n_; ++j) {                        // variable update + hard decision
+ 1,965,200 ( 0.48%)                  double t = llr[j];
+38,930,612 ( 9.47%)                  for (int k = col_ptr_[j]; k < col_ptr_[j + 1]; ++k) t += c2v_[col_edges_[k]];
+ 7,870,626 ( 1.91%)                  post_[j] = t; out[j] = (t <= 0) ? 1 : 0;
+56,047,504 (13.63%)                  for (int k = col_ptr_[j]; k < col_ptr_[j + 1]; ++k) { const int e = col_edges_[k]; v2c_[e] = t - c2v_[e]; }
+         .                       }
+         .                       res.iterations = it;
+        54 ( 0.00%)              if (syndrome_matches(out, syndrome)) { res.bp_converged = true; res.syndrome_ok = true; return res; }
+         .                   }
+       441 ( 0.00%)          if (osd_order_ >= 0) osd(syndrome, llr, out, res);
+41,211,005 (10.02%)  => cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&) (49x)
+        49 ( 0.00%)          return res;
+       550 ( 0.00%)      }
+         .           
+         .           private:
+         .               bool syndrome_matches(const uint8_t* x, const uint8_t* s) const {
+   281,892 ( 0.07%)          for (int i = 0; i < m_; ++i) {
+   262,238 ( 0.06%)              int par = 0;
+ 6,031,474 ( 1.47%)              for (int e = row_ptr_[i]; e < row_ptr_[i + 1]; ++e) par ^= x[var_of_edge_[e]];
+   655,644 ( 0.16%)              if ((par & 1) != (s[i] & 1)) return false;
+         .                   }
+         .                   return true;
+         .               }
+         .           
+    37,053 ( 0.01%)      inline uint64_t* row(int r) { return &M_[(size_t)r * W_]; }
+         .           
+       784 ( 0.00%)      void osd(const uint8_t* syndrome, const double* llr, uint8_t* out, Result& res) {
+        49 ( 0.00%)          res.osd_used = true;
+        50 ( 0.00%)          order_.resize(n_); std::iota(order_.begin(), order_.end(), 0);
+    33,516 ( 0.01%)          std::stable_sort(order_.begin(), order_.end(),(int a, int b) { return post_[a] < post_[b]; });
+        99 ( 0.00%)          pos_.resize(n_);
+    98,100 ( 0.02%)          for (int p = 0; p < n_; ++p) pos_[order_[p]] = p;
+       245 ( 0.00%)          M_.assign((size_t)m_ * W_, 0ULL);
+    37,926 ( 0.01%)          for (int i = 0; i < m_; ++i) {
+         .                       uint64_t* r = row(i);
+   762,391 ( 0.19%)              for (int e = row_ptr_[i]; e < row_ptr_[i + 1]; ++e) { const int p = pos_[var_of_edge_[e]]; r[p >> 6] |= 1ULL << (p & 63); }
+    25,568 ( 0.01%)              if (syndrome[i] & 1) r[n_ >> 6] |= 1ULL << (n_ & 63);
+         .                   }
+       147 ( 0.00%)          pivot_pos_.clear(); int rank = 0;
+   110,367 ( 0.03%)          for (int p = 0; p < n_ && rank < m_; ++p) {
+    73,284 ( 0.02%)              const int w = p >> 6; const uint64_t bit = 1ULL << (p & 63);
+         .                       int piv = -1;
+ 5,965,959 ( 1.45%)              for (int r = rank; r < m_; ++r) if (M_[(size_t)r * W_ + w] & bit) { piv = r; break; }
+    28,224 ( 0.01%)              if (piv < 0) continue;
+    37,004 ( 0.01%)              if (piv != rank) std::swap_ranges(row(piv), row(piv) + W_, row(rank));
+         .                       const uint64_t* pr = row(rank);
+ 7,263,386 ( 1.77%)              for (int r = 0; r < m_; ++r) {
+ 3,612,672 ( 0.88%)                  if (r == rank) continue;
+         .                           uint64_t* rr = row(r);
+ 9,681,906 ( 2.35%)                  if (rr[w] & bit) for (int k = w; k < W_; ++k) rr[k] ^= pr[k];   // pivot row is zero left of column p
+         .                       }
+     9,408 ( 0.00%)              pivot_pos_.push_back(p); ++rank;
+         .                   }
+       343 ( 0.00%)          const uint64_t augbit = 1ULL << (n_ & 63); const int augw = n_ >> 6;
+       147 ( 0.00%)          bool ok = true;
+    18,816 ( 0.00%)          for (int r = rank; r < m_; ++r) if (row(r)[augw] & augbit) { ok = false; break; }
+    78,498 ( 0.02%)          for (int j = 0; j < n_; ++j) out[j] = 0;
+    85,134 ( 0.02%)          for (int i = 0; i < rank; ++i) if (row(i)[augw] & augbit) out[order_[pivot_pos_[i]]] = 1;
+        98 ( 0.00%)          res.syndrome_ok = ok;
+       637 ( 0.00%)          if (ok && osd_order_ > 0) osd_cs(llr, out, rank);
+ 9,892,739 ( 2.41%)  => cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int) (49x)
+       343 ( 0.00%)      }
+         .           
+       686 ( 0.00%)      void osd_cs(const double* llr, uint8_t* out, int rank) {
+        49 ( 0.00%)          std::vector<char> is_piv(n_, 0);
+    47,138 ( 0.01%)          for (int p : pivot_pos_) is_piv[p] = 1;
+       245 ( 0.00%)          std::vector<int> np; np.reserve(n_ - rank);
+   156,996 ( 0.04%)          for (int p = 0; p < n_; ++p) if (!is_piv[p]) np.push_back(p);
+        98 ( 0.00%)          const int NP = (int)np.size(); if (NP == 0) return;
+         .                   const int L = std::min(osd_order_, NP);
+        98 ( 0.00%)          std::vector<double> pc(rank); std::vector<char> base(rank);
+    84,672 ( 0.02%)          for (int i = 0; i < rank; ++i) { const int v = order_[pivot_pos_[i]]; pc[i] = llr[v]; base[i] = out[v]; }
+       196 ( 0.00%)          const int CW = (rank + 63) / 64;
+         .                   // Column bit-vectors of the reduced matrix (over the pivot rows) for EVERY column position, built with a blocked 64x64 bit
+         .                   // transpose: sequential row reads and sequential writes, instead of one strided bit test per (row, column) pair.
+       246 ( 0.00%)          colT_.resize((size_t)W_ * 64 * CW);
+         .                   uint64_t blk[64];
+       732 ( 0.00%)          for (int ib = 0; ib < CW; ++ib) {
+     8,134 ( 0.00%)              for (int w = 0; w < W_; ++w) {
+   796,446 ( 0.19%)                  for (int r = 0; r < 64; ++r) { const int i = ib * 64 + r; blk[63 - r] = (i < rank) ? row(i)[w] : 0ULL; }
+         .                           transpose64(blk);
+   460,992 ( 0.11%)                  for (int c = 0; c < 64; ++c) colT_[(size_t)(w * 64 + c) * CW + ib] = blk[63 - c];
+         .                       }
+         .                   }
+    22,681 ( 0.01%)          auto colp =(int t) { return &colT_[(size_t)np[t] * CW]; };
+         .                   auto delta =(const uint64_t* flip) {
+    45,913 ( 0.01%)              double d = 0;
+ 4,054,987 ( 0.99%)              for (int k = 0; k < CW; ++k) { uint64_t x = flip[k]; while (x) { const int b = __builtin_ctzll(x); x &= x - 1; const int i = k * 64 + b; d += base[i] ? -pc[i] : pc[i]; } }
+         .                       return d;
+         .                   };
+       294 ( 0.00%)          double best = 0.0; int b1 = -1, b2 = -1;
+        48 ( 0.00%)          std::vector<uint64_t> tmp(CW);
+    51,597 ( 0.01%)          for (int t1 = 0; t1 < NP; ++t1) {
+         .                       const uint64_t* c1 = colp(t1);
+    40,768 ( 0.01%)              const double own1 = llr[order_[np[t1]]];
+    10,192 ( 0.00%)              const double d = own1 + delta(c1);
+   112,112 ( 0.03%)              if (d < best - 1e-12) { best = d; b1 = t1; b2 = -1; }
+    36,162 ( 0.01%)              if (t1 < L) for (int t2 = t1 + 1; t2 < L; ++t2) {
+         .                           const uint64_t* c2 = colp(t2);
+    25,725 ( 0.01%)                  for (int k = 0; k < CW; ++k) tmp[k] = c1[k] ^ c2[k];
+     6,174 ( 0.00%)                  const double d2 = own1 + llr[order_[np[t2]]] + delta(tmp.data());
+    10,290 ( 0.00%)                  if (d2 < best - 1e-12) { best = d2; b1 = t1; b2 = t2; }
+         .                       }
+         .                   }
+       245 ( 0.00%)          if (b1 < 0) return;
+         .                   auto apply =(int t) {
+       236 ( 0.00%)              out[order_[np[t]]] ^= 1;
+         .                       const uint64_t* ct = colp(t);
+    92,885 ( 0.02%)              for (int i = 0; i < rank; ++i) if (ct[i >> 6] >> (i & 63) & 1ULL) out[order_[pivot_pos_[i]]] ^= 1;
+         .                   };
+        80 ( 0.00%)          apply(b1); if (b2 >= 0) apply(b2);
+       343 ( 0.00%)      }
+         .           
+         .               int m_, n_, max_iter_; double alpha_; int osd_order_; int W_ = 0;
+         .               std::vector<int> row_ptr_, var_of_edge_, col_ptr_, col_edges_;
+         .               std::vector<double> v2c_, c2v_, post_;
+         .               std::vector<int> order_, pos_, pivot_pos_;
+         .               std::vector<uint64_t> M_, colT_;
+         .           };
+         .           
+-- line 206 ----------------------------------------
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  ./elf/../sysdeps/generic/dl-new-hash.h
+  ./elf/./elf/dl-lookup.c
+  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+406,789,267 (98.91%)  events annotated
+

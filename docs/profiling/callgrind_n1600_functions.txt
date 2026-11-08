@@ -1,0 +1,12 @@
+Ir                    file:function
+--------------------------------------------------------------------------------
+207,518,862 (59.02%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::decode(unsigned char const*, double const*, unsigned char*)
+ 88,060,243 (25.05%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+ 28,305,304 ( 8.05%)  /usr/include/c++/13/bits/stl_vector.h:gkpbp::BpOsd::decode(unsigned char const*, double const*, unsigned char*)
+ 21,015,995 ( 5.98%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int)
+    735,064 ( 0.21%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms
+    668,250 ( 0.19%)  /usr/include/c++/13/bits/stl_algobase.h:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+    631,800 ( 0.18%)  /usr/include/c++/13/bits/move.h:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+    490,784 ( 0.14%)  ./elf/./elf/dl-lookup.c:do_lookup_x
+    485,870 ( 0.14%)  ./elf/../sysdeps/generic/dl-new-hash.h:_dl_lookup_symbol_x
+    432,756 ( 0.12%)  /usr/include/c++/13/bits/stl_algo.h:int* std::__move_merge<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<in

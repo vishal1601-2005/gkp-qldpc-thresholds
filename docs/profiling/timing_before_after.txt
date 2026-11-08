@@ -1,0 +1,10 @@
+old: 4138.5 us/shot
+new: 3261.0 us/shot
+old: 4164.9 us/shot
+new: 3249.0 us/shot
+old: 4123.8 us/shot
+new: 3234.3 us/shot
+old: 4127.0 us/shot
+new: 3237.8 us/shot
+old: 4144.7 us/shot
+new: 3274.6 us/shot

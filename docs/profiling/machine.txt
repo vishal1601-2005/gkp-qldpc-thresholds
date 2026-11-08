@@ -1,0 +1,9 @@
+Linux Vishal 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+CPU(s):                                  12
+Model name:                              AMD Ryzen 7 7445HS w/ Radeon 740M Graphics
+Thread(s) per core:                      2
+L1d cache:                               192 KiB (6 instances)
+L2 cache:                                6 MiB (6 instances)
+L3 cache:                                16 MiB (1 instance)
+g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Python 3.12.3

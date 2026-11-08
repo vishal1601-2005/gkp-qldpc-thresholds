@@ -37,8 +37,12 @@ else echo "perf not installed -> skipping (callgrind below is the profiler)"; fi
 note "callgrind (instruction-level hotspots)"
 if command -v valgrind >/dev/null 2>&1; then
   valgrind --tool=callgrind --callgrind-out-file="$OUT/callgrind.out" ./build/bench_native_portable build/inst16_small.bin 1 1 > "$OUT/callgrind_run.txt" 2>&1
-  callgrind_annotate "$OUT/callgrind.out" > "$OUT/callgrind_functions.txt" 2>/dev/null
-  callgrind_annotate --auto=yes "$OUT/callgrind.out" 2>/dev/null | awk '/^ *[0-9,]+ \(/ {t=$1; gsub(",","",t); if (t+0 > 8000000) print}' | sed 's/^ *//' > "$OUT/callgrind_hot_lines.txt"
+  callgrind_annotate "$OUT/callgrind.out" 2>/dev/null | sed -E 's/ \[[^]]*\]//g' > "$OUT/callgrind_functions.txt"
+  callgrind_annotate --auto=yes "$OUT/callgrind.out" 2>/dev/null | awk '/^ *[0-9,]+ \(/ {t=$1; gsub(",","",t); if (t+0 > 8000000) print}' | sed 's/^ *//' | sed -E 's/ \[[^]]*\]//g' > "$OUT/callgrind_hot_lines.txt"
+  note "callgrind at N = 1600 (shows how the BP / OSD split changes with size)"
+  python scripts/export_instance.py 32 0.50 8 hard 7 build/inst32_small.bin >/dev/null
+  valgrind --tool=callgrind --callgrind-out-file="$OUT/callgrind_n1600.out" ./build/bench_native_portable build/inst32_small.bin 1 1 > "$OUT/callgrind_n1600_run.txt" 2>&1
+  callgrind_annotate "$OUT/callgrind_n1600.out" 2>/dev/null | sed -n '/file:function/,/^$/p' | sed -E 's/ \[[^]]*\]//g' | cut -c1-150 | head -12 > "$OUT/callgrind_n1600_functions.txt"
   note "memcheck (memory errors / leaks)"
   valgrind --leak-check=full ./build/bench_native_portable build/inst16_small.bin 1 1 > "$OUT/memcheck.txt" 2>&1; grep -E "ERROR SUMMARY|in use at exit|total heap usage|All heap blocks" "$OUT/memcheck.txt"
   note "cachegrind (cache misses)"

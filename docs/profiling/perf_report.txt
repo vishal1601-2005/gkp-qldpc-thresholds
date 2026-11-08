@@ -1,0 +1,80 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 13K of event 'cpu-clock:u'
+# Event count (approx.): 3316750000
+#
+# Overhead  Command          Shared Object         Symbol                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+# ........  ...............  ....................  ...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+#
+    46.81%  bench_native_pr  bench_native_prof     [.] main._omp_fn.0
+            |
+            ---main._omp_fn.0
+               GOMP_parallel
+               main
+               __libc_start_call_main
+               __libc_start_main@@GLIBC_2.34
+               _start
+
+    28.56%  bench_native_pr  bench_native_prof     [.] gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int)
+            |
+            ---gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int)
+               main._omp_fn.0
+               GOMP_parallel
+               main
+               __libc_start_call_main
+               __libc_start_main@@GLIBC_2.34
+               _start
+
+    22.35%  bench_native_pr  bench_native_prof     [.] gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+            |
+            ---gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+               main._omp_fn.0
+               GOMP_parallel
+               main
+               __libc_start_call_main
+               __libc_start_main@@GLIBC_2.34
+               _start
+
+     0.69%  bench_native_pr  bench_native_prof     [.] void std::__merge_sort_with_buffer<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+            |
+            ---void std::__merge_sort_with_buffer<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+               gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+               main._omp_fn.0
+               GOMP_parallel
+               main
+               __libc_start_call_main
+               __libc_start_main@@GLIBC_2.34
+               _start
+
+     0.54%  bench_native_pr  bench_native_prof     [.] __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > > std::__move_merge<int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(int*, int*, int*, int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+            |
+            ---__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > > std::__move_merge<int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(int*, int*, int*, int*, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+               void std::__merge_sort_with_buffer<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+               gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+               main._omp_fn.0
+               GOMP_parallel
+               main
+               __libc_start_call_main
+               __libc_start_main@@GLIBC_2.34
+               _start
+
+     0.32%  bench_native_pr  bench_native_prof     [.] void std::__insertion_sort<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+     0.29%  bench_native_pr  libc.so.6             [.] __memset_avx512_unaligned_erms
+     0.18%  bench_native_pr  bench_native_prof     [.] void std::__merge_adaptive<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, long, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}> >(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, long, long, int*, __gnu_cxx::__ops::_Iter_comp_iter<gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)::{lambda(int, int)#1}>)
+     0.04%  bench_native_pr  libc.so.6             [.] __memmove_avx512_unaligned_erms
+     0.02%  bench_native_pr  bench_native_prof     [.] memmove@plt
+     0.02%  bench_native_pr  libc.so.6             [.] _int_malloc
+     0.02%  bench_native_pr  libc.so.6             [.] cfree@GLIBC_2.2.5
+     0.02%  bench_native_pr  libstdc++.so.6.0.33   [.] operator new(unsigned long)
+     0.02%  bench_native_pr  libstdc++.so.6.0.33   [.] operator new(unsigned long, std::nothrow_t const&)
+     0.01%  bench_native_pr  bench_native_prof     [.] operator new(unsigned long, std::nothrow_t const&)@plt
+     0.01%  bench_native_pr  ld-linux-x86-64.so.2  [.] _dl_map_object_from_fd
+     0.01%  bench_native_pr  ld-linux-x86-64.so.2  [.] _dl_relocate_object
+     0.01%  bench_native_pr  ld-linux-x86-64.so.2  [.] check_match
+     0.01%  bench_native_pr  ld-linux-x86-64.so.2  [.] dl_main
+     0.01%  bench_native_pr  ld-linux-x86-64.so.2  [.] mmap64
+     0.01%  bench_native_pr  libc.so.6             [.] __printf_fp_l_buffer
+     0.01%  bench_native_pr  libc.so.6             [.] _int_free

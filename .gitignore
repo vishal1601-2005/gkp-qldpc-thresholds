@@ -7,3 +7,7 @@ __pycache__/
 build/
 *.so
 *.pyd
+
+# profiling raw outputs (large); text summaries in docs/profiling/ are kept
+docs/profiling/*.out
+docs/profiling/perf.data*

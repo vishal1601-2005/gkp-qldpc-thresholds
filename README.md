@@ -85,6 +85,8 @@ This repository does not claim any hardware roadmap is feasible or infeasible. I
 to `ldpc` (z ≈ 5–6) while OSD-0 and BP matched exactly. Sweeping weight-1 over **every** non-pivot column and weight-2 pairs among the first λ fixed it.
 The test that caught this is now a regression test.
 
+**Profiling.** `scripts/profile_all.sh` runs `perf` (where available), valgrind callgrind, cachegrind and memcheck on the native benchmark; results and a short reading are in [`docs/PROFILING.md`](docs/PROFILING.md). In short: BP dominates at N = 400 (about 89 % of instructions); at N = 1600 OSD is about 31 % of instructions and about half of the sampled time; the blocked-transpose OSD column extraction made the decoder about 21 % faster at N = 1600 with identical outputs; memcheck is clean; cache misses are small at N = 400.
+
 **Speed.** Identical shots, priors and settings (min-sum, 100 iterations, OSD-CS 7), per-shot soft priors for the `ldpc` loop, 600 shots per point.
 Measured on the author's laptop (Ubuntu 24.04 under WSL, 12 logical cores); every row is in `data/bench/bench_ubuntu_12core_summary.csv`:
 

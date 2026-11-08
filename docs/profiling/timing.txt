@@ -1,0 +1,2 @@
+m=432 n=900 E=3024 B=300 osd_order=7 threads=1 | best of 3: 0.3701 s  1233.6 us/shot  811 shots/s | BP converged 0.017  syndrome ok 1.000  mean iters 98.8
+m=768 n=1600 E=5376 B=300 osd_order=7 threads=1 | best of 3: 0.8339 s  2779.5 us/shot  360 shots/s | BP converged 0.023  syndrome ok 1.000  mean iters 98.7

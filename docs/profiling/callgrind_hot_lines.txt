@@ -1,0 +1,19 @@
+411,289,846 (100.0%)  PROGRAM TOTALS
+323,244,029 (78.59%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::decode(unsigned char const*, double const*, unsigned char*)
+44,145,938 (10.73%)  /usr/include/c++/13/bits/stl_vector.h:gkpbp::BpOsd::decode(unsigned char const*, double const*, unsigned char*)
+27,928,638 ( 6.79%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&)
+9,698,801 ( 2.36%)  cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int)
+21,695,808 ( 5.28%)                  for (int e = b; e < f; ++e) {
+26,427,027 ( 6.43%)                      if (v <= 0) neg ^= 1;
+26,412,288 ( 6.42%)                      if (a < min1) { min2 = min1; min1 = a; arg = e; } else if (a < min2) { min2 = a; }
+19,809,216 ( 4.82%)                  for (int e = b; e < f; ++e) {
+19,809,216 ( 4.82%)                      const int s = neg ^ (v2c_[e] <= 0 ? 1 : 0);
+21,695,808 ( 5.28%)                      const double mag = (e == arg) ? min2 : min1;
+40,971,304 ( 9.96%)                      c2v_[e] = (s ? -1.0 : 1.0) * alpha_ * mag;
+38,930,612 ( 9.47%)                  for (int k = col_ptr_[j]; k < col_ptr_[j + 1]; ++k) t += c2v_[col_edges_[k]];
+56,047,504 (13.63%)                  for (int k = col_ptr_[j]; k < col_ptr_[j + 1]; ++k) { const int e = col_edges_[k]; v2c_[e] = t - c2v_[e]; }
+41,211,005 (10.02%)  => cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd(unsigned char const*, double const*, unsigned char*, gkpbp::Result&) (49x)
+9,681,906 ( 2.35%)                  if (rr[w] & bit) for (int k = w; k < W_; ++k) rr[k] ^= pr[k];   // pivot row is zero left of column p
+9,892,739 ( 2.41%)  => cpp/include/gkpbp/decoder.hpp:gkpbp::BpOsd::osd_cs(double const*, unsigned char*, int) (49x)
+39,453,278 ( 9.59%)  	return *(this->_M_impl._M_start + __n);
+406,789,267 (98.91%)  events annotated
